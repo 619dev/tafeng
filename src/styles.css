@@ -178,12 +178,17 @@ select:focus {
 .side-panel,
 .monitor-panel,
 .terminal-wrap,
-.file-editor,
-.history-panel {
+.file-editor {
   border: 1px solid #252525;
   border-radius: 8px;
   background: #0c0c0c;
   overflow: hidden;
+}
+
+.history-panel {
+  border: 1px solid #252525;
+  border-radius: 8px;
+  background: #0c0c0c;
 }
 
 .side-panel,
@@ -301,6 +306,12 @@ select:focus {
   min-height: 30px;
 }
 
+.terminal-wrap {
+  display: grid;
+  grid-template-rows: 38px minmax(0, 1fr);
+  min-height: 0;
+}
+
 .terminal-toolbar {
   height: 38px;
   justify-content: space-between;
@@ -316,9 +327,9 @@ select:focus {
 }
 
 .terminal-host {
-  height: calc(100% - 38px);
-  min-height: 292px;
   padding: 10px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .metric-row {
