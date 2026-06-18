@@ -3,6 +3,9 @@ main = "worker/index.ts"
 compatibility_date = "2026-06-18"
 compatibility_flags = ["nodejs_compat"]
 
+[build]
+external = ["*.node"]
+
 [assets]
 directory = "./dist/client"
 binding = "ASSETS"
