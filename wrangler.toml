@@ -1,11 +1,14 @@
 name = "tafeng"
-main = "dist/worker/index.mjs"
+main = "worker/index.ts"
 compatibility_date = "2026-06-18"
 compatibility_flags = ["nodejs_compat"]
-no_bundle = true
 
-[build]
-command = "node build-worker.mjs"
+# Treat .node native addon files as data blobs so esbuild doesn't choke.
+# ssh2 wraps the require in try/catch so it falls back to pure JS crypto.
+[[rules]]
+type = "Data"
+globs = ["**/*.node"]
+fallthrough = true
 
 [assets]
 directory = "./dist/client"
