@@ -29,6 +29,7 @@ export function TerminalPane({ profileId, connectionAttempt, language, connectin
       cursorBlink: true,
       fontFamily: '"SFMono-Regular", "Cascadia Code", "JetBrains Mono", monospace',
       fontSize: 14,
+      scrollback: 5000,
       theme: {
         background: "#070707",
         foreground: "#f5f5f5",

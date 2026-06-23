@@ -42,6 +42,30 @@ button {
   box-shadow: 0 24px 80px rgb(0 0 0 / 45%);
 }
 
+.login-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.theme-toggle {
+  width: 32px;
+  height: 32px;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background: #1a1a1a;
+  color: #bbb;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.theme-toggle:hover {
+  border-color: #78dce8;
+  color: #78dce8;
+}
+
 .traffic-lights {
   display: flex;
   gap: 8px;
@@ -329,7 +353,7 @@ select:focus {
 .terminal-host {
   padding: 10px;
   min-height: 0;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .metric-row {
@@ -703,6 +727,59 @@ select:focus {
 .light .totp-dialog {
   background: #fff;
   border-color: #dedede;
+}
+
+/* Login page light theme */
+.login-light {
+  color-scheme: light;
+  background: #f0f0f0;
+  color: #111;
+}
+
+.login-light .login-panel {
+  background: #ffffff;
+  border-color: #dedede;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 12%);
+}
+
+.login-light .login-brand p {
+  color: #777;
+}
+
+.login-light label {
+  color: #444;
+}
+
+.login-light input,
+.login-light select {
+  background: #f7f7f7;
+  border-color: #dadada;
+  color: #111;
+}
+
+.login-light input:focus,
+.login-light select:focus {
+  border-color: #3b9dac;
+}
+
+.login-light .primary-button {
+  background: #222;
+  color: #fff;
+}
+
+.login-light .theme-toggle {
+  background: #f0f0f0;
+  border-color: #ccc;
+  color: #555;
+}
+
+.login-light .theme-toggle:hover {
+  border-color: #3b9dac;
+  color: #3b9dac;
+}
+
+.login-light .form-error {
+  color: #d44;
 }
 
 @media (max-width: 1120px) {

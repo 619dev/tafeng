@@ -1,4 +1,4 @@
-import { Lock, ShieldCheck } from "lucide-react";
+import { Lock, Moon, ShieldCheck, Sun } from "lucide-react";
 import { FormEvent, useState } from "react";
 import type { Language } from "../../shared/types";
 import { api } from "../lib/api";
@@ -16,6 +16,7 @@ export function LoginGate({ language, t, onLanguageChange, onAuthenticated }: Pr
   const [otp, setOtp] = useState("");
   const [needsOtp, setNeedsOtp] = useState(false);
   const [error, setError] = useState("");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -30,13 +31,22 @@ export function LoginGate({ language, t, onLanguageChange, onAuthenticated }: Pr
     }
   }
 
+  function toggleTheme() {
+    setTheme((current) => (current === "dark" ? "light" : "dark"));
+  }
+
   return (
-    <main className="login-shell">
+    <main className={`login-shell ${theme === "light" ? "login-light" : ""}`}>
       <form className="login-panel" onSubmit={submit}>
-        <div className="traffic-lights" aria-hidden="true">
-          <span className="red" />
-          <span className="yellow" />
-          <span className="green" />
+        <div className="login-panel-top">
+          <div className="traffic-lights" aria-hidden="true">
+            <span className="red" />
+            <span className="yellow" />
+            <span className="green" />
+          </div>
+          <button type="button" className="theme-toggle" onClick={toggleTheme} title={theme === "dark" ? t("lightTerminal") : t("darkTerminal")}>
+            {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
         </div>
         <div className="login-brand">
           <Lock size={28} />
