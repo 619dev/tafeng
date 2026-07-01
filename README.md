@@ -666,6 +666,10 @@ R2 bucket: tafeng-files
 
 不是。当前设计是全局历史记录，不管哪个 VPS，所有执行过的命令都会进入同一个历史列表，最多保存 100000 条。
 
+如果这个项目对你有用的话，请我喝罐可乐吧。
+<br>
+<img width=30% height=30% src="请我喝可乐.jpg" alt="qrcode">
+<br>
 ## 开源协议
 
 本项目采用 MIT License。你可以自由使用、修改、分发和用于商业项目，但需要保留版权与许可声明。详见 [LICENSE](./LICENSE)。
