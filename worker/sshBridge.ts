@@ -2,6 +2,7 @@ import { Buffer } from "node:buffer";
 import { Duplex } from "node:stream";
 import { connect } from "cloudflare:sockets";
 import { Client, type ClientChannel, type SFTPWrapper } from "ssh2";
+import { formatSshTarget, normalizeHost } from "../shared/net";
 import type { Language, ProcessInfo, RemoteFile, ServerMetrics, ServerProfile, TerminalMessage } from "../shared/types";
 
 export type SshBridge = {
@@ -58,12 +59,13 @@ export function createSshBridge(socket: WebSocket, options: SshBridgeOptions): S
   }
 
   async function openSshSession(profile: ServerProfile) {
+    const host = normalizeHost(profile.host);
     send({ type: "output", data: `\r\n${copy.title}\r\n` });
-    send({ type: "output", data: `${copy.selected}${profile.name} (${profile.username}@${profile.host}:${profile.port})\r\n` });
+    send({ type: "output", data: `${copy.selected}${profile.name} (${formatSshTarget(profile.username, host, profile.port)})\r\n` });
     send({ type: "output", data: `${copy.connecting}\r\n` });
 
     try {
-      const tcpSocket = connect({ hostname: profile.host, port: profile.port });
+      const tcpSocket = connect({ hostname: host, port: profile.port });
       tcpStream = new CloudflareSocketDuplex(tcpSocket);
       conn = new Client();
 

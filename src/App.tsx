@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { formatSshTarget } from "../shared/net";
 import type { AppSettings, Language, ProcessInfo, ServerMetrics, ServerProfile } from "../shared/types";
 import { CommandHistoryPanel } from "./components/CommandHistoryPanel";
 import { ConnectionPanel } from "./components/ConnectionPanel";
@@ -139,7 +140,7 @@ export default function App() {
         />
         <div className="center-stack">
           <div className="context-line">
-            <span>{selectedProfile ? `${selectedProfile.username}@${selectedProfile.host}` : t("noConnection")}</span>
+            <span>{selectedProfile ? formatSshTarget(selectedProfile.username, selectedProfile.host) : t("noConnection")}</span>
             <small>{selectedProfile ? `${t("port")} ${selectedProfile.port}` : t("selectConnectionHint")}</small>
           </div>
           <TerminalPane

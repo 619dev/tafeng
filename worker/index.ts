@@ -1,4 +1,5 @@
 import type { AppSettings, Language, ServerProfile, TerminalMessage } from "../shared/types";
+import { normalizeHost } from "../shared/net";
 import { getCookie, handleLogin, json } from "./auth";
 import { createSshBridge } from "./sshBridge";
 import {
@@ -124,7 +125,7 @@ async function createConnection(request: Request, env: Env) {
   const now = new Date().toISOString();
   const profile = await request.json<Omit<ServerProfile, "id" | "createdAt" | "updatedAt">>();
   const profiles = await listConnections(env);
-  const next: ServerProfile = { ...profile, id: crypto.randomUUID(), createdAt: now, updatedAt: now };
+  const next: ServerProfile = { ...profile, host: normalizeHost(profile.host), id: crypto.randomUUID(), createdAt: now, updatedAt: now };
   await saveConnections(env, [next, ...profiles]);
   return json(next, 201);
 }
@@ -132,7 +133,8 @@ async function createConnection(request: Request, env: Env) {
 async function updateConnection(id: string, request: Request, env: Env) {
   const patch = await request.json<Partial<ServerProfile>>();
   const profiles = await listConnections(env);
-  const next = profiles.map((profile) => (profile.id === id ? { ...profile, ...patch, id, updatedAt: new Date().toISOString() } : profile));
+  const normalizedPatch = patch.host === undefined ? patch : { ...patch, host: normalizeHost(patch.host) };
+  const next = profiles.map((profile) => (profile.id === id ? { ...profile, ...normalizedPatch, id, updatedAt: new Date().toISOString() } : profile));
   await saveConnections(env, next);
   return json(next.find((profile) => profile.id === id) ?? null);
 }
@@ -186,4 +188,3 @@ async function handleTerminalSocket(request: Request, env: Env, _ctx: ExecutionC
 function parseLanguage(value: string | null): Language {
   return value === "en" ? "en" : "zh";
 }
-

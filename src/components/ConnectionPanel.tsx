@@ -1,5 +1,6 @@
 import { KeyRound, Pencil, Plug, PlugZap, Plus, Server, Trash2, X } from "lucide-react";
 import { FormEvent, useState } from "react";
+import { formatSshTarget, normalizeHost } from "../../shared/net";
 import type { ServerProfile } from "../../shared/types";
 import type { TFunction } from "../lib/i18n";
 import { emptyProfile } from "../lib/sample";
@@ -21,16 +22,20 @@ export function ConnectionPanel({ profiles, selectedId, onSelect, onDisconnect, 
 
   function submit(event: FormEvent) {
     event.preventDefault();
+    const normalizedDraft = {
+      ...draft,
+      host: normalizeHost(draft.host)
+    };
     if (editingProfile) {
       onUpdate({
         ...editingProfile,
-        ...draft
+        ...normalizedDraft
       });
       setEditingProfile(null);
       setDraft({ ...emptyProfile, name: t("newVps") });
       return;
     }
-    onCreate(draft);
+    onCreate(normalizedDraft);
     setDraft({ ...emptyProfile, name: t("newVps") });
   }
 
@@ -66,7 +71,7 @@ export function ConnectionPanel({ profiles, selectedId, onSelect, onDisconnect, 
             <button className="connection-main" onClick={() => onSelect(profile.id)} type="button">
               <span>{profile.name}</span>
               <small>
-                {profile.username}@{profile.host}:{profile.port}
+                {formatSshTarget(profile.username, profile.host, profile.port)}
               </small>
             </button>
             <span className="connection-actions">

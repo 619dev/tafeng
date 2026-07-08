@@ -1,5 +1,6 @@
 import { Clock3, Eraser, RefreshCw } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { formatSshTarget } from "../../shared/net";
 import type { CommandHistoryEntry } from "../../shared/types";
 import { api } from "../lib/api";
 import type { TFunction } from "../lib/i18n";
@@ -67,7 +68,7 @@ export function CommandHistoryPanel({ refreshKey, t }: Props) {
           <div className="history-item" key={item.id}>
             <code>{item.command}</code>
             <small>
-              {item.profileName} · {item.username ?? "-"}@{item.host ?? "-"} · {new Date(item.createdAt).toLocaleString()}
+              {item.profileName} · {formatSshTarget(item.username, item.host)} · {new Date(item.createdAt).toLocaleString()}
             </small>
           </div>
         ))}
