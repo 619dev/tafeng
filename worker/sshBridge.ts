@@ -68,7 +68,7 @@ export function createSshBridge(socket: WebSocket, options: SshBridgeOptions): S
     send({ type: "output", data: `${copy.connecting}\r\n` });
 
     try {
-      const tcpSocket = connect({ hostname: host, port: profile.port });
+      const tcpSocket = connect(createTcpAddress(host, profile.port));
       await tcpSocket.opened;
       tcpStream = new CloudflareSocketDuplex(tcpSocket);
       conn = new Client();
@@ -482,6 +482,15 @@ export function createSshBridge(socket: WebSocket, options: SshBridgeOptions): S
     close,
     get sftpSession() { return sftpSession; }
   };
+}
+
+function createTcpAddress(host: string, port: number) {
+  if (isIpv6Literal(host)) return `tcp://[${host}]:${port}`;
+  return { hostname: host, port };
+}
+
+function isIpv6Literal(value: string): boolean {
+  return value.includes(":") && !value.includes("/");
 }
 
 class CloudflareSocketDuplex extends Duplex {
